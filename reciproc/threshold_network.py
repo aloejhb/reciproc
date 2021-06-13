@@ -7,9 +7,10 @@ from networkx.utils.decorators import py_random_state
 
 
 def threshold_network(r0, W, thresh, tstep):
+    # TODO change the arguments to same as netfunc
     if W.shape[0] != W.shape[1] or W.shape[0] != r0.shape[0]:
         raise Exception('W should be a square matrix with row number same as length of r0!')
-    r = np.empty((r0.shape[0], tstep))
+    r = np.zeros((r0.shape[0], tstep))
     r[:, 0] = r0
     for t in range(tstep-1):
         r[:, t+1] = np.matmul(W, r[:, t]) > thresh
@@ -28,7 +29,7 @@ def show_movie(movie):
 
 @py_random_state(3)
 def ei_network(graph, r0, tstep, seed=None):
-    r = np.empty((r0.shape[0], tstep))
+    r = np.zeros((r0.shape[0], tstep))
     r[:, 0] = r0
     for t in range(tstep-1):
         temp_graph = nx.create_empty_copy(graph)

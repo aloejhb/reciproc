@@ -13,7 +13,7 @@ def avalanche_size(r):
     return sum(active_flag)
 
 
-def network_avalanche_size(graph, tstep=30):
+def network_avalanche_size(graph, netfunc, tstep=30):
     thresh = 0
     W = nx.to_numpy_matrix(graph)
     N = graph.number_of_nodes()
@@ -21,7 +21,7 @@ def network_avalanche_size(graph, tstep=30):
     for index in range(N):
         r0 = np.zeros(N)
         r0[index] = 1.0
-        r = threshold_network(r0, W, thresh, tstep)
+        r = netfunc(graph, r0, tstep)
         ava_size = avalanche_size(r)
         ava_size_list[index] = ava_size
     return ava_size_list
