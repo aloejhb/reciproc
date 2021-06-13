@@ -22,17 +22,23 @@ def assign_cell_type(G, p):
     keys = list(G.nodes)
     cell_type = dict(zip(keys, ct_list))
     nx.set_node_attributes(G, cell_type, 'cell_type')
-
     for u, v, d in G.out_edges(data=True):
         if G.nodes[u]['cell_type'] == 1:
-            d['weight'] = 1
+            d['sign'] = 1
         else:
-            d['weight'] = -1
+            d['sign'] = -1
+    return G
+
+
+def assign_weight(G):
+    for u, v, d in G.out_edges(data=True):
+        d['weight'] = np.random.random()
     return G
 
 
 def er_digraph_dale(n, p, p_exc):
     G = er_digraph(n, p)
+    G = assign_weight(G)
     G = assign_cell_type(G, p_exc)
     return G
 
@@ -47,6 +53,9 @@ def reciprocitize(G, p, seed=None):
     Add opposite edge if it does not exists
     with probability p
     """
+    if p < 0 or p > 1:
+        raise ValueError('p_reci should be between 0 and 1!')
+
     G_copy = G.copy()
     for u, v in G_copy.out_edges():
         if not G_copy.has_edge(v, u):

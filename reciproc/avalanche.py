@@ -12,6 +12,7 @@ def avalanche_size(r):
     active_flag = np.max(r, axis=1) > 0
     return sum(active_flag)
 
+
 def network_avalanche_size(graph, tstep=30):
     thresh = 0
     W = nx.to_numpy_matrix(graph)
